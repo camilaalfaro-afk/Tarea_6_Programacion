@@ -55,7 +55,7 @@ $$n + 1 \ge 2^{h/2} \implies \log_2(n + 1) \ge \frac{h}{2} \implies h \le 2\log_
 ## 4. Problema 4: Justificación formal de BFS para completitud, ancho máximo y profundidad mínima
 Sea $L_d = \{v \in V : \text{dist}(\text{root}, v) = d\}$ el conjunto de nodos a profundidad $d$ procesados secuencialmente por la cola FIFO (`queue`) de BFS:
 1. **Profundidad mínima $(\min_{v \in \text{Hojas}} d(v))$:**
-   Por inducción sobre el orden de extracción de la cola FIFO, BFS visita todos los nodos de $L_d$ antes de extraer cualquier nodo de $L_{d+1}$ (monotonicidad de distancias). En consecuencia, el **primer** nodo hoja extraído de la cola pertenece necesariamente al nivel $d^*$ más pequeño posible, garantizando optimalidad y corte temprano con complejidad $O(b^{d^*})$.
+   Por inducción sobre el orden de extracción de la cola FIFO, BFS visita todos los nodos de $L_d$ antes de extraer cualquier nodo de $L_{d+1}$ (monotonicidad de distancias). En consecuencia, el **primer** nodo hoja extraído de la cola pertenece necesariamente al nivel $d^*$ más pequeño posible, garantizando optimalidad y corte temprano con complejidad $(O(b^{d^*}))$.
 2. **Ancho máximo ($\max_{d \ge 0} |L_d|$):**
    Al iniciar cada iteración del bucle externo, la cola contiene exacta y exclusivamente todos los nodos del nivel $L_d$. Así, `q.size()` mide directamente $|L_d|$ sin estructuras auxiliares de agrupación por nivel, obteniendo $\max_d |L_d|$ en una única pasada $O(n)$.
 3. **Verificación de árbol binario completo:**
