@@ -336,3 +336,45 @@ public:
         cout << "\n";
     }
 };
+
+// PROBLEMAS 3 y 4: Árbol Binario General para DFS y BFS Avanzado
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    explicit TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+//PROBLEMA 3: DFS Iterativo Avanzado (Exclusivamente stack, sin recursión)
+vector<int> findRootToLeafPathWithSumK(TreeNode* root, int K) {
+    if (!root) return {};
+    struct Frame {
+        TreeNode* node;
+        int currentSum;
+        vector<int> path;
+    };
+    stack<Frame> st;
+    st.push({root, root->val, {root->val}});
+    while (!st.empty()) {
+        Frame curr = move(st.top());
+        st.pop();
+        TreeNode* u = curr.node;
+        if (!u->left && !u->right) {
+            if (curr.currentSum == K) {
+                return curr.path;
+            }
+        }
+        if(u->right) {
+            vector<int> rightPath = curr.path;
+            rightPath.push_back(u->right->val);
+            st.push({u->right, curr.currentSum + u->right->val, move(rightPath)});
+        }
+        if (u->left) {
+            vector<int> leftPath = curr.path;
+            leftPath.push_back(u->left->val);
+            st.push({u->left, curr.currentSum + u->left->val, move(leftPath)});
+        }
+    }
+    return {};
+}
+
+//PROBLEMA 4: BFS Iterativo Avanzado (Exclusivamente queue, sin recursión)
