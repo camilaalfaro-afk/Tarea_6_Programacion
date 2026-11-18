@@ -38,11 +38,13 @@ $$n \ge 2^{bh(\text{root})} - 1 \ge 2^{h/2} - 1$$
 Despejando $h$:
 $$n + 1 \ge 2^{h/2} \implies \log_2(n + 1) \ge \frac{h}{2} \implies h \le 2\log_2(n + 1) \in O(\log n)$$
 ### Comparación experimental (20 elementos ascendentes $1 \dots 20$)
+
 | Estructura | Altura obtenida | Complejidad real | Observación |
 | :--- | :---: | :---: | :--- |
 | **BST Tradicional** | `19` | $O(n)$ | Degradado en cadena lineal derecha |
 | **Red-Black Tree** | `5` | $O(\log n)$ | Cumple $5 \le 2\log_2(21) \approx 8.78$ |
-Recorrido Pre-Order del Red-Black Tree (`R` = Rojo, `B` = Negro):
+
+**Recorrido Pre-Order del Red-Black Tree (`R` = Rojo, `B` = Negro):**
     8(B) 4(B) 2(B) 1(B) 3(B) 6(B) 5(B) 7(B) 12(R) 10(B) 9(B) 11(B) 16(B) 14(R) 13(B) 15(B) 18(R) 17(B) 19(B) 20(R)
 ---
 ## 3. Problema 3: ¿Por qué DFS es adecuado para caminos raíz-hoja de suma $K$?
