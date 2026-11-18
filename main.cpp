@@ -376,5 +376,138 @@ vector<int> findRootToLeafPathWithSumK(TreeNode* root, int K) {
     }
     return {};
 }
-
 //PROBLEMA 4: BFS Iterativo Avanzado (Exclusivamente queue, sin recursión)
+struct BFSMetrics {
+    bool isComplete;
+    int maxWidth;
+    int minDepth;
+};
+
+BFSMetrics analyzeTreeBFS(TreeNode* root) {
+    if (!root) {
+        return {true, 0, 0};
+    }
+    queue<TreeNode*> q;
+    q.push(root);
+    bool isComplete = true;
+    bool seenNullChild = false;
+    int maxWidth = 0;
+    int minDepth = -1;
+    int currentDepth = 0;
+
+    while (!q.empty()) {
+        int levelWidth = static_cast<int>(q.size());
+        currentDepth++;
+        maxWidth = max(maxWidth, levelWidth);
+        for (int i = 0; i < levelWidth; ++i) {
+            TreeNode* curr = q.front();
+            q.pop();
+            if (!curr->left && !curr->right && minDepth == -1) {
+                minDepth = currentDepth;
+            }
+            if (curr->left) {
+                if (seenNullChild) isComplete = false;
+                q.push(curr->left);
+            } else {
+                seenNullChild = true;
+            }
+            if (curr->right) {
+                if (seenNullChild) isComplete = false;
+                q.push(curr->right);
+            } else {
+                seenNullChild = true;
+            }
+        }
+    }
+    return {isComplete, maxWidth, minDepth};
+}
+
+int main() {
+    cout << "EJERCICIO 1: BST Iterativo (20 inserciones, 2 eliminaciones)\n";
+    IterativeBST bstRandom;
+    vector<int> values20 = {
+        50, 30, 70, 20, 40, 60, 80, 15, 25, 35,
+        45, 55, 65, 75, 85, 10, 22, 37, 62, 90
+    };
+    for (int v : values20) bstRandom.insert(v);
+    cout << "Altura inicial (20 elementos): " << bstRandom.height() << "\n";
+    bstRandom.remove(10);
+    bstRandom.remove(30);
+    cout << "Tras eliminar 10 y 30:\n";
+    bstRandom.printInOrder();
+    cout << "Altura final: " << bstRandom.height() << "\n\n";
+
+    cout << "PROBLEMA 2: Red-Black Tree vs BST (20 datos ascendentes)\n";
+    IterativeBST degradedBST;
+    RedBlackTree rbt;
+    for (int i = 1; i <= 20; ++i) {
+        degradedBST.insert(i);
+        rbt.insert(i);
+    }
+    cout << "Insercion ascendente 1..20:\n";
+    cout << " -> Altura BST tradicional: " << degradedBST.height() << "\n";
+    cout << " -> Altura Red-Black Tree:  " << rbt.height() << "\n";
+    cout << " -> Propiedades RBT validas: "
+         << (rbt.verifyProperties() ? "SI (5/5 cumplidas)" : "NO") << "\n";
+    rbt.printPreOrder();
+    cout << "\n";
+
+    cout << "PROBLEMA 3: DFS Iterativo (Camino raiz-hoja con suma K)\n";
+    TreeNode* sampleTree = new TreeNode(5);
+    sampleTree->left = new TreeNode(4);
+    sampleTree->right = new TreeNode(8);
+    sampleTree->left->left = new TreeNode(11);
+    sampleTree->left->left->left = new TreeNode(7);
+    sampleTree->left->left->right = new TreeNode(2);
+    sampleTree->right->left = new TreeNode(13);
+    sampleTree->right->right = new TreeNode(4);
+    sampleTree->right->right->right = new TreeNode(1);
+    int K = 22;
+    vector<int> path = findRootToLeafPathWithSumK(sampleTree, K);
+    cout << "Buscando camino raiz-hoja con suma K = " << K << ": ";
+    if (!path.empty()) {
+        for (size_t i = 0; i < path.size(); ++i) {
+            cout << path[i] << (i + 1 < path.size() ? " -> " : "\n");
+        }
+    } else {
+        cout << "No encontrado\n";
+    }
+    cout << "\n";
+
+    cout << "PROBLEMA 4: BFS Iterativo Avanzado\n";
+    BFSMetrics m1 = analyzeTreeBFS(sampleTree);
+    cout << "Arbol de muestra (Problema 3):\n";
+    cout << " -> Es completo:        " << (m1.isComplete ? "SI" : "NO") << "\n";
+    cout << " -> Ancho maximo:       " << m1.maxWidth << "\n";
+    cout << " -> Profundidad minima: " << m1.minDepth << "\n";
+    TreeNode* completeTree = new TreeNode(1);
+    completeTree->left = new TreeNode(2);
+    completeTree->right = new TreeNode(3);
+    completeTree->left->left = new TreeNode(4);
+    completeTree->left->right = new TreeNode(5);
+    completeTree->right->left = new TreeNode(6);
+    BFSMetrics m2 = analyzeTreeBFS(completeTree);
+    cout << "Arbol completo de 6 nodos:\n";
+    cout << " -> Es completo:        " << (m2.isComplete ? "SI" : "NO") << "\n";
+    cout << " -> Ancho maximo:       " << m2.maxWidth << "\n";
+    cout << " -> Profundidad minima: " << m2.minDepth << "\n";
+
+    delete sampleTree->left->left->left;
+    delete sampleTree->left->left->right;
+    delete sampleTree->left->left;
+    delete sampleTree->left;
+    delete sampleTree->right->left;
+    delete sampleTree->right->right->right;
+    delete sampleTree->right->right;
+    delete sampleTree->right;
+    delete sampleTree;
+
+    delete completeTree->left->left;
+    delete completeTree->left->right;
+    delete completeTree->left;
+    delete completeTree->right->left;
+    delete completeTree->right;
+    delete completeTree;
+
+    return 0;
+}
