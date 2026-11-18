@@ -42,8 +42,7 @@ $$n + 1 \ge 2^{h/2} \implies \log_2(n + 1) \ge \frac{h}{2} \implies h \le 2\log_
 | :--- | :---: | :---: | :--- |
 | **BST Tradicional** | `19` | $O(n)$ | Degradado en cadena lineal derecha |
 | **Red-Black Tree** | `5` | $O(\log n)$ | Cumple $5 \le 2\log_2(21) \approx 8.78$ |
-
-**Recorrido Pre-Order del Red-Black Tree (`R` = Rojo, `B` = Negro):**
+Recorrido Pre-Order del Red-Black Tree (`R` = Rojo, `B` = Negro):
     8(B) 4(B) 2(B) 1(B) 3(B) 6(B) 5(B) 7(B) 12(R) 10(B) 9(B) 11(B) 16(B) 14(R) 13(B) 15(B) 18(R) 17(B) 19(B) 20(R)
 ---
 ## 3. Problema 3: ¿Por qué DFS es adecuado para caminos raíz-hoja de suma $K$?
@@ -53,7 +52,7 @@ $$n + 1 \ge 2^{h/2} \implies \log_2(n + 1) \ge \frac{h}{2} \implies h \le 2\log_
 ---
 ## 4. Problema 4: Justificación formal de BFS para completitud, ancho máximo y profundidad mínima
 Sea $L_d = \{v \in V : \text{dist}(\text{root}, v) = d\}$ el conjunto de nodos a profundidad $d$ procesados secuencialmente por la cola FIFO (`queue`) de BFS:
-1. **Profundidad mínima ($\min_{v \in \text{Hojas}} d(v)$):**
+1. **Profundidad mínima $(\min_{v \in \text{Hojas}} d(v))$:**
    Por inducción sobre el orden de extracción de la cola FIFO, BFS visita todos los nodos de $L_d$ antes de extraer cualquier nodo de $L_{d+1}$ (monotonicidad de distancias). En consecuencia, el **primer** nodo hoja extraído de la cola pertenece necesariamente al nivel $d^*$ más pequeño posible, garantizando optimalidad y corte temprano con complejidad $O(b^{d^*})$.
 2. **Ancho máximo ($\max_{d \ge 0} |L_d|$):**
    Al iniciar cada iteración del bucle externo, la cola contiene exacta y exclusivamente todos los nodos del nivel $L_d$. Así, `q.size()` mide directamente $|L_d|$ sin estructuras auxiliares de agrupación por nivel, obteniendo $\max_d |L_d|$ en una única pasada $O(n)$.
